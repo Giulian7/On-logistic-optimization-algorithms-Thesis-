@@ -29,7 +29,7 @@ class Packer():
     def set_default_bin(self, bin : BinModel):
         self.default_bin = bin
     
-    def add_bin(self, bin : Bin):
+    def add_bin(self, bin : BinModel):
         self.bins.append(bin)
 
     def add_fleet(self, fleet : list[BinModel]):
@@ -40,6 +40,8 @@ class Packer():
 
     def clear_current_configuration(self):
         self.current_configuration.clear()
+
+    
 
     def pack_to_bin(self, bin : Bin, item : Item):
         if not bin.items:

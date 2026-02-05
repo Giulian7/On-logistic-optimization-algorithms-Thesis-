@@ -30,19 +30,24 @@ class BinModel:
     # Note: sizes are only defined on construction
     @property
     def width(self):  return self._size.x
+    @width.setter
+    def width(self,value):  self._size.x = value
+
     @property
     def height(self): return self._size.y
-    @property
-    def depth(self):  return self._size.z
-    @width.setter
-    def width(self,value): self._size.x = value
     @height.setter
     def height(self,value): self._size.y = value
-    @depth.setter
-    def depth(self,value): self._size.z = value
+
     @property
-    def volume(self):
-        return self.width * self.height * self.depth
+    def depth(self):  return self._size.z
+    @depth.setter
+    def depth(self,value):  self._size.z = value
+
+    @property
+    def dimension(self): return self._size
+
+    @property
+    def volume(self):    return self.width * self.height * self.depth
     
     def __str__(self):
         return "%s(%sx%sx%s, max_weight:%s) vol(%s)" % (
@@ -63,19 +68,19 @@ class Bin:
     """
     def __init__(self, id, model : BinModel):
         """
-        Docstring for __init__
+        Bin constructor
         
         :param self: Current Bin object
-        :param id: identifier (no unique constraint)
+        :param id: identifier (no uniqueness constraint)
         :param model: Reference model
         :type model: BinModel
         """
         self.id = id
         self._model : BinModel   = model
-        self.weight : Decimal    = 0
+        self.weight : Decimal    = 0   # Current loaded weight
         self.items  : list[Item] = []  # Current loaded items
 
-    # Properties to access model data 
+    # Properties to access model data
     # Note: direct write access is not allowed
     @property
     def width(self):
@@ -87,11 +92,16 @@ class Bin:
     def depth(self):
         return self._model.depth
     @property
+    def dimension(self):
+        return self._model.dimension
+    @property
     def max_weight(self):
         return self._model.max_weight
 
     def __str__(self):
         return f"Bin {self.id} of model {self._model.name}: loaded items {len(self.items)}"
+    
+    # Constraint Checks
 
     def _weight_whitin_limit(self, item : Item):
         return self.weight+item.weight <= self.max_weight
