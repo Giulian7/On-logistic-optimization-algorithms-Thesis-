@@ -100,55 +100,30 @@ class Bin:
 
     def __str__(self):
         return f"Bin {self.id} of model {self._model.name}: loaded items {len(self.items)}"
-    
-    # Constraint Checks
 
-    def _weight_whitin_limit(self, item : Item):
-        return self.weight+item.weight <= self.max_weight
-    
-    def _fits_inside_bin(self, item : Item):
-        dimension = item.dimensions
-        return (self.width > item.position.x + dimension.x and
-            self.height > item.position.y + dimension.y and
-            self.depth > item.position.z + dimension.z
-        )
-    
-    def _no_overlap(self, item : Item):
-        return len(self.items) == 0 or not any([intersect(ib.volume,item.volume) for ib in self.items])
-
-    def _is_supported(self, item : Item, allow_item_fall : bool = True, minimum_support = MINIMUM_SUPPORT_SURFACE):
-        if item.position.y == 0:
-            return True
-        else:
-            highest_y = 0
-            target_items = []
-            for ib in self.items:
-                # check for 
-                if rect_intersect(ib.volume,item.volume,Vector3.AXIS['x'],Vector3.AXIS['z']) > minimum_support:
-                    target_items.append(ib)
-                    highest_y = max(highest_y,ib.position.y+ib.height)
-
-            if len(target_items)==0 or (not allow_item_fall and highest_y!=item.position.y):
-                return False
-            else:
-                item.position.y = highest_y
-                return True
-
-    def put_item(self, item : Item, pivot : Vector3 = Vector3(), minimum_support=MINIMUM_SUPPORT_SURFACE):
-
+    def put_item(self, item : Item, pivot : Vector3 = Vector3(), static_constraints = [], space_constraints = []):
+        """
+        Insert an item in the bin
+        
+        :param item: Item to insert
+        :type item: Item
+        :param pivot: Starting position of the item
+        :type pivot: Vector3
+        :param static_constraints: List of static constraints (see .Constraints) to follow
+        :param space_constraints: List of space constraints (see .Constraints) to follow
+        """
         valid_item_position = item.position
         item.position = Vector3(*pivot)
 
-        # first check on weight constraint (simplest check)
-        if not self._weight_whitin_limit(item):
+        # Static constraints depends only on the static properties of the bin and the item
+        # we can evaluate them for first
+        if not all([c(self,item) for c in static_constraints]):
             return False
 
         for oriz_deg_free in range(2):
             for vert_deg_free in range(2):
-
-                if self._fits_inside_bin(item) and \
-                   self._no_overlap(item) and \
-                   self._is_supported(item=item, allow_item_fall=True, minimum_support=minimum_support):                    
+                # Space constraints must be evaluated for every spatial configuration
+                if all([c(self,item) for c in space_constraints]):
                     self.items.append(item)
                     self.weight += item.weight
                     return True
@@ -166,4 +141,4 @@ class Bin:
             self.weight -= item.weight
             return True
         except ValueError:
-            return False
+            return False # the item was not there

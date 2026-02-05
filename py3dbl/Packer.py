@@ -2,12 +2,21 @@ from .Item import Item
 from .Bin import Bin, BinModel
 from .Space import Vector3, Volume
 from .Decimal import decimals
+from .Space import intersect, rect_intersect
+from .Constraints import constraints, Constraint, process_constraints
+
+# basical constraints 
+BASE_CONSTRAINTS = [
+    constraints['weight_within_limit'],
+    constraints['fits_inside_bin'],
+    constraints['no_overlap']
+]
 
 class Packer():
     """
     Store configurations and execute 3D bin packing algorithm(s)
     """
-    def __init__(self, default_bin : None|BinModel = None, fleet : list[BinModel] = [], items : list[Item] = [], current_configuration : None|list[Bin] = None):
+    def __init__(self, default_bin : None|BinModel = None, fleet : list[BinModel] = [], items : list[Item] = [], current_configuration : list[Bin] = []):
         """
         Docstring for __init__
         
@@ -41,9 +50,7 @@ class Packer():
     def clear_current_configuration(self):
         self.current_configuration.clear()
 
-    
-
-    def pack_to_bin(self, bin : Bin, item : Item):
+    def _pack_to_bin(self, bin : Bin, item : Item, static_constraints, space_constraints):
         if not bin.items:
             return bin.put_item(item)
         else:
@@ -51,20 +58,21 @@ class Packer():
                 for ib in bin.items:
                     pivot = Vector3(*ib.position)
                     pivot[axis] += ib.dimensions[axis]
-                    if bin.put_item(item, pivot):
+                    if bin.put_item(item, pivot, static_constraints=static_constraints,space_constraints=space_constraints):
                         return True
             return False
 
-    def pack_test_on_models(self, models : list[BinModel]):
+    def pack_test_on_models(self, models : list[BinModel], constraints : list[Constraint] = BASE_CONSTRAINTS):
         configuration = []
         for model in models:
             bin = Bin(0,model)
             for item in self.items:
-                self.pack_to_bin(bin,item)
+                self._pack_to_bin(bin,item,)
             configuration.append(bin)
         return configuration
     
-    def pack(self, bigger_first=True, follow_priority=True, number_of_decimals=decimals):
+    
+    def pack(self, constraints : list[Constraint] = BASE_CONSTRAINTS, bigger_first=True, follow_priority=True, number_of_decimals=decimals):
         """
         Execute the 3D bin packing on the given batch and fleet
         
@@ -90,8 +98,8 @@ class Packer():
             key=lambda item: item.volume.volume(), reverse=bigger_first
         )
         
-        self.current_configuration = []
         unfitted_items = []
+        static_constraints, space_constraints = process_constraints(constraints)
 
         while len(items_to_pack) != 0:
             if available_bins != None and len(available_bins) != 0:
@@ -102,15 +110,16 @@ class Packer():
                 return
 
             for item in items_to_pack:
-               if not self.pack_to_bin(bin,item):
+               if not self._pack_to_bin(bin,item,static_constraints=static_constraints.copy(),space_constraints=space_constraints.copy()):
                    unfitted_items.append(item)
 
             if len(bin.items) == 0:
-                return
+                break
 
             items_to_pack = unfitted_items
             unfitted_items = []
             self.current_configuration.append(bin)
+        return len(items_to_pack)
 
     def calculate_statistics(self):
         statistics = {
@@ -121,7 +130,7 @@ class Packer():
         for bin in self.current_configuration:
             for item in bin.items:
                 statistics["loaded_volume"] += item.volume.volume()
-                statistics["loaded_weight"] += item.weight
+            statistics["loaded_weight"] += bin.weight
             configuration_volume += bin._model.volume
         statistics["average_volume"] = statistics["loaded_volume"]/configuration_volume
         return statistics
