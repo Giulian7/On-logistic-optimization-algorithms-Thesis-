@@ -2,7 +2,6 @@ from .Item import Item
 from .Bin import Bin, BinModel
 from .Space import Vector3, Volume
 from .Decimal import decimals
-from .Space import intersect, rect_intersect
 from .Constraints import constraints, Constraint, process_constraints
 
 # basical constraints 
@@ -12,15 +11,63 @@ BASE_CONSTRAINTS = [
     constraints['no_overlap']
 ]
 
+PACKING_STRATEGIES = []
+
+
+def base_packer(available_bins : list[BinModel], items_to_pack : list[Item], default_bin : None|BinModel = None, constraints : list[Constraint] = BASE_CONSTRAINTS):
+    
+    def try_fit(bin : Bin, item : Item):
+        old_pos = item.position
+        for ib in bin.items:
+            pivot = Vector3(*ib.position)
+            for axis in range(3):
+                item.position = pivot + map(lambda x: ib.dimensions[x] if x == axis else 0, range(3))
+                for oriz_deg_free in range(2):
+                    for vert_deg_free in range(2):
+                        if bin.put_item(item,constraints):
+                            return True
+                        else:
+                            item.rotate90(vertical=True)
+                    item.rotate90(orizontal=True)
+        item.position = old_pos
+        return False
+
+    current_configuration = []
+    unfitted_items = []
+    constraints.sort()
+
+    while len(items_to_pack) != 0:
+        if available_bins != None and len(available_bins) != 0:
+            bin = Bin(len(current_configuration),available_bins.pop(0))
+        elif default_bin != None:
+            bin = Bin(len(current_configuration),default_bin)
+        else:
+            break
+
+        for item in items_to_pack:
+            if not bin.items:
+                if not bin.put_item(item,constraints):
+                    unfitted_items.append(item)
+            else:
+                if not try_fit(bin,item):
+                    unfitted_items.append(item)
+
+        # if no item has been packed probably there's no solution
+        if len(bin.items) == 0:
+            break
+
+        items_to_pack = unfitted_items
+        unfitted_items = []
+        current_configuration.append(bin)
+    
+    return current_configuration
+
 class Packer():
     """
     Store configurations and execute 3D bin packing algorithm(s)
     """
     def __init__(self, default_bin : None|BinModel = None, fleet : list[BinModel] = [], items : list[Item] = [], current_configuration : list[Bin] = []):
         """
-        Docstring for __init__
-        
-        :param self: Current Packer object
         :param default_bin: a bin model that describes the preferred bin to pack in case the fleet is insufficent
         :type default_bin: None | BinModel
         :param bins: list of bin models that describes the fleet to pack
@@ -97,7 +144,8 @@ class Packer():
         items_to_pack.sort(
             key=lambda item: item.volume.volume(), reverse=bigger_first
         )
-        
+        self.current_configuration = base_packer(available_bins=available_bins,items_to_pack=items_to_pack,default_bin=self.default_bin,constraints=constraints)
+        """
         unfitted_items = []
         static_constraints, space_constraints = process_constraints(constraints)
 
@@ -119,7 +167,7 @@ class Packer():
             items_to_pack = unfitted_items
             unfitted_items = []
             self.current_configuration.append(bin)
-        return len(items_to_pack)
+        return len(items_to_pack)"""
 
     def calculate_statistics(self):
         statistics = {

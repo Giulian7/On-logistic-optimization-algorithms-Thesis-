@@ -2,16 +2,11 @@ from .Bin import Bin
 from .Item import Item
 from .Space import Volume, Vector3, intersect, rect_intersect
 
-class ConstraintType:
-    STATIC = 1
-    SPACE_DEPENDENT = 2
-    UNKNOWN = 0
-
 class Constraint:
     """
     A Constraint to apply to a bin packing problem
     """
-    def __init__(self,func ,weight : int = 0,type : ConstraintType = ConstraintType.UNKNOWN):
+    def __init__(self,func ,weight : int = 0):
         """
         :param func: Function that evaluates the constraint
         :param weight: Weight used for evaluation order (generally more expensive constraint should have higher weight)
@@ -41,57 +36,37 @@ class Constraint:
         return self.func(bin,item,**self.kwargs)
     def __str__(self):
         return f"Constraint {self.func.__name__} weight({self.weight})"
-    
-def process_constraints(constraints : list[Constraint]):
-    """
-    Given a list of constraints it devide the statics from the space ones and sort them by weight 
-    
-    :param constraints: List of constraints to process
-    :type constraints: list[Constraint] 
-    """
-    static_constraints = []
-    space_constraints = []
-    for constraint in constraints:
-        if constraint.type == ConstraintType.STATIC:
-            static_constraints.append(constraint)
-        else:
-            space_constraints.append(constraint)
-    static_constraints.sort()
-    space_constraints.sort()
-    return (static_constraints,space_constraints)
 
 # dictionary of currently available constraints
 constraints = dict()
 
-def constraint(weight : int, type : ConstraintType = ConstraintType.UNKNOWN):
+def constraint(weight : int):
     """
     Decorator for simple Constraint generation
     
     :param weight: Weight of the constraint
     :type weight: int
-    :param type: Type of the constraint
-    :type type: ConstraintType
     """
     def wrapper(func):
-        constraints[func.__name__] = Constraint(func,weight,type)
+        constraints[func.__name__] = Constraint(func,weight)
         return func
     return wrapper
 
 # Ready-Made Constraint
 
-@constraint(weight=5,type=ConstraintType.STATIC)
+@constraint(weight=5)
 def weight_within_limit(bin : Bin, item : Item):
     return bin.weight+item.weight <= bin.max_weight
 
-@constraint(weight=10,type=ConstraintType.SPACE_DEPENDENT)
+@constraint(weight=10)
 def fits_inside_bin(bin : Bin, item : Item):
-    return all([bin.dimension[axis] > item.position[axis] + item.dimensions[axis] for axis in range(3)])
+    return all([bin.dimension[axis] > (item.position[axis] + item.dimensions[axis]) for axis in range(3)])
     
-@constraint(weight=15,type=ConstraintType.SPACE_DEPENDENT)
+@constraint(weight=15)
 def no_overlap(bin : Bin, item : Item):
     return len(bin.items) == 0 or not any([intersect(ib.volume,item.volume) for ib in bin.items])
 
-@constraint(weight=20,type=ConstraintType.SPACE_DEPENDENT)
+@constraint(weight=20)
 def is_supported(bin: Bin, item : Item, allow_item_fall : bool = False, minimum_support : float = 0.5):
     if item.position.y == 0:
         return True

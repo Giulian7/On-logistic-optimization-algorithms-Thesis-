@@ -90,7 +90,7 @@ def render_volume(volume : Volume, axes, color : str, border_width : float = BOR
 def render_item(item : Item, axes, color : str, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
     render_volume(item.volume,axes,color,border_width,border_color,transparency)
 
-def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
+def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, render_bin : bool = True, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
     if not bin.items:
             return
 
@@ -99,7 +99,8 @@ def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, border_width 
     for idx,item in enumerate(bin.items):
         render_item_interactive(item=item,fig=fig,color=colors[idx%len(colors)],border_width=border_width,border_color=border_color,transparency=transparency)
 
-    render_volume_interactive(Volume(bin.dimension),fig=fig,color="lightgrey",transparency=.9,name="Bin",show_border=False)
+    if render_bin:
+        render_volume_interactive(Volume(bin.dimension),fig=fig,color="lightgrey",transparency=.9,name="Bin",show_border=False)
 
     fig.update_layout(
         scene=dict(

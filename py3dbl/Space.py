@@ -42,6 +42,13 @@ class Vector3:
     
     def __str__(self):
         return f"x:{self.x},y:{self.y},z:{self.z}"
+    
+    def __add__(self,target):
+        y = Vector3(*target)
+        y.x += self.x
+        y.y += self.y
+        y.z += self.z
+        return y
 
     def rotate90(self, orizontal : bool = False, vertical : bool = False):
         """

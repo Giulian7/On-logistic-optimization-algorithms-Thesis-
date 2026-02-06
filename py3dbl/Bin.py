@@ -2,7 +2,7 @@
 from decimal import Decimal
 from .Decimal import set_to_decimal
 from .Item import Item
-from .Space import Vector3, Volume, intersect, rect_intersect
+from .Space import Vector3, Volume
 
 MINIMUM_SUPPORT_SURFACE = .5
 
@@ -101,7 +101,7 @@ class Bin:
     def __str__(self):
         return f"Bin {self.id} of model {self._model.name}: loaded items {len(self.items)}"
 
-    def put_item(self, item : Item, pivot : Vector3 = Vector3(), static_constraints = [], space_constraints = []):
+    def put_item(self, item : Item, constraints = []):
         """
         Insert an item in the bin
         
@@ -109,31 +109,15 @@ class Bin:
         :type item: Item
         :param pivot: Starting position of the item
         :type pivot: Vector3
-        :param static_constraints: List of static constraints (see .Constraints) to follow
-        :param space_constraints: List of space constraints (see .Constraints) to follow
+        :param constraints: List of constraints (see .Constraints) to follow
+        :type static_constraints: list[Constraint]
         """
-        valid_item_position = item.position
-        item.position = Vector3(*pivot)
-
-        # Static constraints depends only on the static properties of the bin and the item
-        # we can evaluate them for first
-        if not all([c(self,item) for c in static_constraints]):
+        if all([c(self,item) for c in constraints]):
+            self.items.append(item)
+            self.weight += item.weight
+            return True
+        else:
             return False
-
-        for oriz_deg_free in range(2):
-            for vert_deg_free in range(2):
-                # Space constraints must be evaluated for every spatial configuration
-                if all([c(self,item) for c in space_constraints]):
-                    self.items.append(item)
-                    self.weight += item.weight
-                    return True
-                else:
-                    item.rotate90(vertical=True)
-            
-            item.rotate90(orizontal=True)
-
-        item.position = valid_item_position
-        return False
     
     def remove_item(self, item : Item):
         try:
