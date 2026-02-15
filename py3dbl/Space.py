@@ -244,5 +244,13 @@ assert rect_intersect(voltest1,voltest2,0,2) == 0, rect_intersect(voltest1,volte
 assert rect_intersect(voltest1,voltest2,1,2) == 0, rect_intersect(voltest1,voltest2,1,2)
 assert voltest1.widest_surface() == (0,1) or voltest1.widest_surface() == (1,0) , str(voltest1.widest_surface())
 assert voltest1.widest_surface() == voltest2.widest_surface(), str(voltest1.widest_surface())
-assert voltest1.shortest_surface() == (2,1) or voltest1.shortest_surface(voltest1) == (1,2)
+assert voltest1.shortest_surface() == (2,1) or voltest1.shortest_surface() == (1,2)
 assert voltest1.shortest_surface() == voltest2.shortest_surface()
+surface_axes = voltest1.widest_surface()
+surface_area = voltest1.size[surface_axes[0]]*voltest1.size[surface_axes[1]]
+voltest1.set_bottom_surface(surface_axes)
+assert voltest1.width*voltest1.depth == surface_area
+surface_axes = voltest1.shortest_surface()
+surface_area = voltest1.size[surface_axes[0]]*voltest1.size[surface_axes[1]]
+voltest1.set_bottom_surface(surface_axes)
+assert voltest1.width*voltest1.depth == surface_area

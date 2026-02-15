@@ -1,3 +1,4 @@
+from decimal import Decimal
 from .Bin import Bin, BinModel
 from .Item import Item
 from .Space import Vector3
@@ -105,8 +106,9 @@ def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constrai
 
 ## Here I left some very simple algorithms
 
-def _try_fit(bin : Bin, item : Item, constraints : list[Constraint], allow_full_rotation = True):
+def _try_fit(bin : Bin, item : Item, constraints : list[Constraint], allow_full_rotation = False):
     old_pos = item.position
+    initial_state = item.stand
     for ib in bin.items:
         pivot = Vector3(*ib.position)
         for axis in [0,2,1]:
@@ -116,14 +118,14 @@ def _try_fit(bin : Bin, item : Item, constraints : list[Constraint], allow_full_
                     for vertical_deg_free in range(2):
                         if bin.put_item(item,constraints):
                             return True
-                        item.rotate90(vertical=True)
-                    if allow_full_rotation: item.rotate90(orizontal=True)
+                        item.rotate90(orizontal=not initial_state,vertical=initial_state)
+                    if allow_full_rotation: item.rotate90(vertical=not initial_state, orizontal=initial_state)
                     else: break
     item.position = old_pos
     return False
 
 @algorithm
-def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None):
+def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation : bool = False):
     """
     An algorithm that before the insertion makes all the item stand on the smallest side
     
@@ -135,6 +137,8 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
     :type constraints: list[Constraint]
     :param default_bin: A default bin to use if there are no more available bins
     :type default_bin: None | BinModel
+    :param allow_full_rotation: True allow items to rotate on the axis "other" axis
+    :type allow_full_rotation: bool
     """
     current_configuration = []
     unfitted_items = []
@@ -143,11 +147,12 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
 
     for item in items_to_pack:
         surface_idx = item.shortest_surface()
+        item.stand = True
         item.min_surface = item.dimensions[surface_idx[0]] * item.dimensions[surface_idx[1]]
         item.set_bottom_surface(surface_idx)
         
 
-    items_to_pack.sort(key=lambda item: item.volume(),reverse=True)   # O(nlog(n)
+    items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
     items_to_pack.sort(key=(lambda item: item.min_surface),reverse=True)
     for idx, item in enumerate(items_to_pack):
         item.name = idx  
@@ -167,7 +172,7 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
                 if not bin.put_item(item,constraints):
                     unfitted_items.append(item)
             else:
-                if not _try_fit(bin,item,constraints):
+                if not _try_fit(bin,item,constraints,allow_full_rotation=allow_full_rotation):
                     unfitted_items.append(item)
 
         # if no item has been packed probably there's no solution
@@ -181,7 +186,7 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
     return current_configuration
 
 @algorithm
-def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None):
+def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation = False):
     """
     An algorithm that before the insertion makes all the item lay on the widest side
     
@@ -193,6 +198,8 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
     :type constraints: list[Constraint]
     :param default_bin: A default bin to use if there are no more available bins
     :type default_bin: None | BinModel
+    :param allow_full_rotation: True allow items to rotate on the axis "other" axis
+    :type allow_full_rotation: bool
     """
     current_configuration = []
     unfitted_items = []
@@ -201,6 +208,7 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
 
     for item in items_to_pack:
         surface_idx = item.widest_surface()
+        item.stand = False
         item.max_surface = item.dimensions[surface_idx[0]] * item.dimensions[surface_idx[1]]
         item.set_bottom_surface(surface_idx)
 
@@ -224,7 +232,7 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
                 if not bin.put_item(item,constraints):
                     unfitted_items.append(item)
             else:
-                if not _try_fit(bin,item,constraints):
+                if not _try_fit(bin,item,constraints,allow_full_rotation=allow_full_rotation):
                     unfitted_items.append(item)
 
         # if no item has been packed probably there's no solution
@@ -238,7 +246,7 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
     return current_configuration
 
 @algorithm
-def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, volume_threashold = .5):
+def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, volume_threashold = Decimal(.5), allow_full_rotation = False):
     """
     An algorithm that before the insertion makes the items that have less volume than threshold stand on the smallest side and the items that have more volume than threshold lay on the widest side
     
@@ -250,6 +258,10 @@ def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], 
     :type constraints: list[Constraint]
     :param default_bin: A default bin to use if there are no more available bins
     :type default_bin: None | BinModel
+    :param volume_threshold: Absolute volume units threshold for decide if an item is small or big
+    :type volume_threshold: Decimal
+    :param allow_full_rotation: True allow items to rotate on the axis "other" axis
+    :type allow_full_rotation: bool
     """
 
     current_configuration = []
@@ -258,6 +270,7 @@ def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], 
     available_bins.sort(key=lambda bin: bin.volume())
 
     for item in items_to_pack:
+        item.stand = item.volume() < volume_threashold
         item.set_bottom_surface(
             item.shortest_surface() if item.volume() < volume_threashold else
             item.widest_surface()
@@ -282,7 +295,7 @@ def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], 
                 if not bin.put_item(item,constraints):
                     unfitted_items.append(item)
             else:
-                if not _try_fit(bin,item,constraints):
+                if not _try_fit(bin,item,constraints, allow_full_rotation=allow_full_rotation):
                     unfitted_items.append(item)
 
         # if no item has been packed probably there's no solution
