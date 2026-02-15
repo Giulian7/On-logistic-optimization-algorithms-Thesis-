@@ -28,8 +28,6 @@ def render_volume_interactive(volume : Volume, fig : go.Figure, color : str, nam
     :type border_color: str
     :param transparency: Description
     :type transparency: float
-
-    Author: Martina Iacoponi (dear colleague)
     """
     x, y, z = [float(value) for value in volume.position]   # position from bottom-back-left corner
     w, h, d = [float(value) for value in volume.size] # actual dimensions of the item (considered rotation)
@@ -48,7 +46,7 @@ def render_volume_interactive(volume : Volume, fig : go.Figure, color : str, nam
         ))
     
 def render_item_interactive(item : Item, fig : go.Figure, color : str, show_border : bool = True, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
-    render_volume_interactive(item.volume,fig,color,item.name,show_border,border_width,border_color,transparency)
+    render_volume_interactive(item,fig,color,item.name,show_border,border_width,border_color,transparency)
 
 def render_volume(volume : Volume, axes, color : str, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
     base = [float(value) for value in volume.position]   # position from bottom-back-left corner
@@ -88,7 +86,7 @@ def render_volume(volume : Volume, axes, color : str, border_width : float = BOR
     )
 
 def render_item(item : Item, axes, color : str, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
-    render_volume(item.volume,axes,color,border_width,border_color,transparency)
+    render_volume(item,axes,color,border_width,border_color,transparency)
 
 def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, render_bin : bool = True, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
     if not bin.items:
@@ -96,11 +94,20 @@ def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, render_bin : 
 
     fig = go.Figure()
 
+    bin_render_params = {
+        "color": "lightgrey",
+        "name": "Bin",
+        "show_border": False
+    }
+
+    for dead_volume in bin._model.dead_volumes:
+         render_volume_interactive(volume=dead_volume,fig=fig,transparency=.2,**bin_render_params)
+
     for idx,item in enumerate(bin.items):
         render_item_interactive(item=item,fig=fig,color=colors[idx%len(colors)],border_width=border_width,border_color=border_color,transparency=transparency)
 
     if render_bin:
-        render_volume_interactive(Volume(bin.dimension),fig=fig,color="lightgrey",transparency=.9,name="Bin",show_border=False)
+        render_volume_interactive(Volume(bin.dimensions),fig=fig,transparency=.9,**bin_render_params)
 
     fig.update_layout(
         scene=dict(
@@ -128,8 +135,6 @@ def render_bin(bin : Bin, colors : list[str] = COLORS, border_width : float = BO
 
         for idx,item in enumerate(bin.items):
             render_item(item=item,axes=ax,color=colors[idx%len(colors)],border_width=border_width,border_color=border_color,transparency=transparency)
-
-        #render_volume(volume=Volume(bin.dimension),axes=ax,color="lightgrey",transparency=.9)
 
         ax.set_xlabel('WIDTH')
         ax.set_ylabel('DEPTH')
