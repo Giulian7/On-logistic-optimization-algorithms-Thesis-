@@ -67,7 +67,7 @@ class Packer():
         algorithm.set_parameter("default_bin",self.default_bin)
         self.current_configuration = algorithm(self.bins,self.items,constraints)
 
-    def calculate_statistics(self):
+    def calculate_statistics(self) -> dict[str:any]:
         statistics = {
             "loaded_volume": 0,
             "loaded_weight": 0,

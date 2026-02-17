@@ -89,8 +89,6 @@ def render_item(item : Item, axes, color : str, border_width : float = BORDER_WI
     render_volume(item,axes,color,border_width,border_color,transparency)
 
 def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, render_bin : bool = True, border_width : float = BORDER_WIDTH, border_color : str = BORDER_COLOR, transparency : float = TRANSPARENCY):
-    if not bin.items:
-            return
 
     fig = go.Figure()
 
@@ -116,7 +114,7 @@ def render_bin_interactive(bin : Bin, colors : list[str] = COLORS, render_bin : 
             yaxis=dict(title='Depth'),
             aspectmode='data'
         ),
-        title=f"3D Packing Visualization - {bin} ({len(bin.items)} items)"
+        title=f"3D Packing Visualization - {bin}"
     )
 
     fig.show()

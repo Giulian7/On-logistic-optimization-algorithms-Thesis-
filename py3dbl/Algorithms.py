@@ -73,12 +73,12 @@ def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constrai
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    items_to_pack.sort(key=lambda item: item.volume())
-    available_bins.sort(key=lambda bin: bin.volume())
+    items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
+    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
 
     while len(items_to_pack) != 0:
         if available_bins != None and len(available_bins) != 0:
-            bin = Bin(len(current_configuration),available_bins.pop(0))
+            bin = available_bins.pop(0)
         elif default_bin != None:
             bin = Bin(len(current_configuration),default_bin)
         else:
@@ -139,7 +139,7 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume())
+    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
 
     for item in items_to_pack:
         surface_idx = item.shortest_surface()
@@ -197,15 +197,15 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume())
+    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
 
     for item in items_to_pack:
         surface_idx = item.widest_surface()
         item.max_surface = item.dimensions[surface_idx[0]] * item.dimensions[surface_idx[1]]
         item.set_bottom_surface(surface_idx)
 
-    items_to_pack.sort(key=lambda item: item.volume())
-    items_to_pack.sort(key=(lambda item: item.max_surface),reverse=True)
+    items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
+    #items_to_pack.sort(key=(lambda item: item.max_surface),reverse=True)
     for idx, item in enumerate(items_to_pack):
         item.name = idx  
 
@@ -255,7 +255,7 @@ def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], 
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume())
+    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
 
     for item in items_to_pack:
         item.set_bottom_surface(
