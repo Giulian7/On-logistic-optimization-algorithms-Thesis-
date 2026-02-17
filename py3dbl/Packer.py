@@ -127,7 +127,6 @@ class Packer():
             "loaded_weight": 0,
         }
         configuration_volume = 0
-        items_loaded = 0
         for bin in self.current_configuration:
             for item in bin.items:
                 statistics["loaded_volume"] += item.volume()

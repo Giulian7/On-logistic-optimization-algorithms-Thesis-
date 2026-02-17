@@ -5,7 +5,7 @@ import platform
 from datetime import datetime
 
 START = 100
-END = 800
+END = 200
 STEP = 100
 
 lpacker = py3dbl.Packer()
@@ -36,7 +36,7 @@ with open('benchmarking_result.txt',mode="a",newline='') as file:
         timed_counter = [0,0]
         bin_counter = [0,0]
         for _ in range(3):
-            lpacker.reset_items()
+            lpacker.
             ppacker.items = list()
             ppacker.bins = list()
             items = py3dbl.item_generator(
