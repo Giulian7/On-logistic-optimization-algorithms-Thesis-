@@ -1,5 +1,5 @@
 from decimal import Decimal
-from .Space import Vector3, Volume
+from .Space import Volume
 from .Decimal import set_to_decimal
 
 class Item(Volume):

@@ -49,6 +49,9 @@ class Vector3:
         y.y += self.y
         y.z += self.z
         return y
+    
+    def __neg__(self):
+        return Vector3(-self.x,-self.y,-self.z)
 
     def rotate90(self, orizontal : bool = False, vertical : bool = False):
         """

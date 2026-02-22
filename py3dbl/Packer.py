@@ -1,6 +1,5 @@
 from .Item import Item
 from .Bin import Bin, BinModel
-from .Decimal import decimals
 from .Constraints import constraints, Constraint
 from .Algorithms import PackingAlgorithm, algorithms
 
@@ -10,13 +9,13 @@ class Packer():
     """
     def __init__(self, algorithm : PackingAlgorithm = algorithms['base_packer'], default_bin : None|BinModel = None, fleet : list[Bin] = [], items : list[Item] = [], current_configuration : list[Bin] = []):
         """
-        :param default_bin: a bin model that describes the preferred bin to pack in case the fleet is insufficent
+        :param default_bin: A bin model that describes the preferred bin to pack in case the fleet is insufficent
         :type default_bin: None | BinModel
-        :param bins: list of bin models that describes the fleet to pack
+        :param bins: List of bin models that describes the fleet to pack
         :type bins: list[BinModel]
-        :param items: list of items to fit in the fleet
+        :param items: List of items to fit in the fleet
         :type items: list[Item]
-        :param current_configuration: a configuration to start on
+        :param current_configuration: A configuration to start on
         :type current_configuration: None | list[Bin]
         """
         self.bins   =  list(fleet)
@@ -109,7 +108,6 @@ class Packer():
         """
         Execute the 3D bin packing on the given batch and fleet
         
-        :param self: Current Packer object
         :param bigger_first: Description
         :param number_of_decimals: Description
         """

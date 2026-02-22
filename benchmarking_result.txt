@@ -1,4 +1,4 @@
-==========2026-02-17 19:34:38==========
+==========2026-02-17 22:13:06==========
 System Information:
  System: Linux
  Node Name: Ideapad
@@ -6,3 +6,754 @@ System Information:
  Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
  Machine: x86_64
  Processor: 
+100 items:
+ py3dbl:
+  time: 0.51, bins: 2.2
+ py3dbp:
+  time: 0.27, bins: 5.2
+200 items:
+ py3dbl:
+  time: 1.55, bins: 3.6
+ py3dbp:
+  time: 1.42, bins: 10.6
+==========2026-02-17 22:15:06==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+100 items:
+ py3dbl:
+  time: 0.61, bins: 2.0
+ py3dbp:
+  time: 0.26, bins: 4.4
+200 items:
+ py3dbl:
+  time: 1.57, bins: 3.5
+ py3dbp:
+  time: 1.45, bins: 10.3
+==========2026-02-17 22:17:22==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+100 items:
+ py3dbl:
+  time: 0.57, bins: 2.2
+ py3dbp:
+  time: 0.27, bins: 4.7
+200 items:
+ py3dbl:
+  time: 1.52, bins: 3.6
+ py3dbp:
+  time: 1.44, bins: 10.8
+300 items:
+ py3dbl:
+  time: 4.0, bins: 4.8
+ py3dbp:
+  time: 5.05, bins: 18.7
+400 items:
+ py3dbl:
+  time: 5.98, bins: 7.1
+ py3dbp:
+  time: 14.57, bins: 33.7
+500 items:
+ py3dbl:
+  time: 9.93, bins: 8.2
+ py3dbp:
+  time: 29.59, bins: 47.3
+==========2026-02-17 22:31:34==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+400 items:
+ py3dbl:
+  time: 7.17, bins: 6.6
+ py3dbp:
+  time: 14.13, bins: 30.1
+500 items:
+ py3dbl:
+  time: 10.44, bins: 7.9
+ py3dbp:
+  time: 30.18, bins: 41.7
+600 items:
+ py3dbl:
+  time: 15.9, bins: 9.1
+ py3dbp:
+  time: 52.41, bins: 55.1
+700 items:
+ py3dbl:
+  time: 21.33, bins: 11.0
+ py3dbp:
+  time: 95.51, bins: 77.0
+800 items:
+ py3dbl:
+  time: 27.85, bins: 12.4
+ py3dbp:
+  time: 158.22, bins: 95.4
+
+==========2026-02-19 16:00:34==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+2000 items:
+ base_packer:
+  time: 322.92, bins: 48.67
+ py3dbp:
+  time: 279.88, bins: 70.0
+==========2026-02-19 16:53:55==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+100 items:
+ base_packer:
+  time: 0.93, bins: 3.67
+ py3dbp:
+  time: 0.63, bins: 5.0
+200 items:
+ base_packer:
+  time: 2.86, bins: 6.0
+ py3dbp:
+  time: 2.04, bins: 8.33
+300 items:
+ base_packer:
+  time: 6.39, bins: 8.0
+ py3dbp:
+  time: 5.45, bins: 11.0
+400 items:
+ base_packer:
+  time: 11.03, bins: 11.0
+ py3dbp:
+  time: 9.5, bins: 15.67
+500 items:
+ base_packer:
+  time: 17.78, bins: 12.67
+ py3dbp:
+  time: 17.27, bins: 18.67
+600 items:
+ base_packer:
+  time: 26.56, bins: 15.67
+ py3dbp:
+  time: 24.0, bins: 22.67
+==========2026-02-19 17:31:49==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+100 items:
+ all_stand:
+  time: 0.97, bins: 4.0
+ py3dbp:
+  time: 0.68, bins: 4.67
+200 items:
+ all_stand:
+  time: 2.78, bins: 6.0
+ py3dbp:
+  time: 2.2, bins: 8.33
+300 items:
+ all_stand:
+  time: 6.12, bins: 8.67
+ py3dbp:
+  time: 5.14, bins: 12.0
+==========2026-02-19 17:34:05==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+100 items:
+ all_stand:
+  time: 0.89, bins: 3.33
+ base_packer:
+  time: 1.01, bins: 3.0
+ py3dbp:
+  time: 0.62, bins: 4.33
+200 items:
+ all_stand:
+  time: 2.36, bins: 6.33
+ base_packer:
+  time: 2.83, bins: 6.0
+ py3dbp:
+  time: 2.07, bins: 8.67
+300 items:
+ all_stand:
+  time: 5.68, bins: 8.67
+ base_packer:
+  time: 6.67, bins: 8.0
+ py3dbp:
+  time: 5.37, bins: 11.33
+==========2026-02-19 18:45:56==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+100 items:
+ all_stand:
+  time: 1.01, bins: 3.33
+ base_packer:
+  time: 0.95, bins: 3.33
+ py3dbp:
+  time: 0.55, bins: 4.33
+200 items:
+ all_stand:
+  time: 2.33, bins: 6.33
+ base_packer:
+  time: 2.83, bins: 6.0
+ py3dbp:
+  time: 2.13, bins: 8.33
+300 items:
+ all_stand:
+  time: 5.7, bins: 8.67
+ base_packer:
+  time: 6.6, bins: 8.33
+ py3dbp:
+  time: 5.0, bins: 12.0
+==========2026-02-20 16:30:37==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+100 items:
+ base_packer:
+  time: 1.07, bins: 3.0
+ all_stand:
+  time: 0.99, bins: 3.33
+ all_lay:
+  time: 1.1, bins: 3.0
+200 items:
+ base_packer:
+  time: 2.36, bins: 6.0
+ all_stand:
+  time: 2.83, bins: 6.0
+ all_lay:
+  time: 3.23, bins: 6.33
+300 items:
+ base_packer:
+  time: 6.3, bins: 8.33
+ all_stand:
+  time: 6.59, bins: 9.0
+ all_lay:
+  time: 7.05, bins: 9.0
+==========2026-02-20 16:33:03==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+600 items:
+ base_packer:
+  time: 25.45, bins: 16.0
+ all_stand:
+  time: 26.55, bins: 16.67
+ all_lay:
+  time: 26.81, bins: 17.67
+ py3dbp:
+  time: 26.04, bins: 22.0
+==========2026-02-20 16:54:35==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+600 items:
+ base_packer:
+  time: 25.39, bins: 15.0
+ all_stand:
+  time: 27.43, bins: 15.67
+ all_lay:
+  time: 27.35, bins: 16.33
+ py3dbp:
+  time: 23.03, bins: 22.33
+==========2026-02-20 17:00:35==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+100 items:
+ base_packer:
+  time: 0.62, bins: 3.0
+ all_stand:
+  time: 0.59, bins: 3.0
+ all_lay:
+  time: 0.76, bins: 3.33
+ py3dbp:
+  time: 0.41, bins: 4.67
+200 items:
+ base_packer:
+  time: 2.68, bins: 5.33
+ all_stand:
+  time: 2.72, bins: 5.67
+ all_lay:
+  time: 3.03, bins: 5.67
+ py3dbp:
+  time: 2.02, bins: 8.0
+300 items:
+ base_packer:
+  time: 6.04, bins: 7.67
+ all_stand:
+  time: 6.26, bins: 8.33
+ all_lay:
+  time: 6.26, bins: 8.33
+ py3dbp:
+  time: 5.74, bins: 12.0
+==========2026-02-20 18:12:55==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+100 items:
+ base_packer:
+  time: 0.92, bins: 3.0
+ big_lay_small_stand:
+  time: 0.82, bins: 3.33
+ py3dbp:
+  time: 0.61, bins: 5.33
+200 items:
+ base_packer:
+  time: 3.05, bins: 5.33
+ big_lay_small_stand:
+  time: 2.78, bins: 5.33
+ py3dbp:
+  time: 2.13, bins: 8.0
+300 items:
+ base_packer:
+  time: 6.3, bins: 7.67
+ big_lay_small_stand:
+  time: 6.23, bins: 8.0
+ py3dbp:
+  time: 5.32, bins: 12.0
+==========2026-02-20 19:12:22==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+   Constraint weight_within_limit weight(5)
+   Constraint fits_inside_bin weight(10)
+   Constraint no_overlap weight(15)
+   Constraint is_supported weight(20)
+100 items:
+ base_packer:
+  time: 1.1, bins: 4.0
+ big_lay_small_stand:
+  time: 0.97, bins: 3.33
+200 items:
+ base_packer:
+  time: 3.34, bins: 6.67
+ big_lay_small_stand:
+  time: 2.69, bins: 6.67
+300 items:
+ base_packer:
+  time: 7.95, bins: 9.0
+ big_lay_small_stand:
+  time: 7.08, bins: 8.67
+==========2026-02-20 19:18:30==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+  Constraint weight_within_limit weight(5)
+  Constraint fits_inside_bin weight(10)
+  Constraint no_overlap weight(15)
+  Constraint is_supported weight(20)
+100 items:
+ base_packer:
+  time: 1.1, bins: 3.33
+ big_lay_small_stand:
+  time: 0.98, bins: 3.33
+200 items:
+ base_packer:
+  time: 3.68, bins: 6.33
+ big_lay_small_stand:
+  time: 3.03, bins: 6.0
+300 items:
+ base_packer:
+  time: 8.88, bins: 9.0
+ big_lay_small_stand:
+  time: 7.04, bins: 9.0
+400 items:
+ base_packer:
+  time: 13.91, bins: 12.0
+ big_lay_small_stand:
+  time: 13.14, bins: 11.67
+500 items:
+ base_packer:
+  time: 22.11, bins: 14.67
+ big_lay_small_stand:
+  time: 20.62, bins: 14.67
+==========2026-02-20 21:03:22==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+  Constraint weight_within_limit weight(5)
+  Constraint fits_inside_bin weight(10)
+  Constraint no_overlap weight(15)
+  Constraint is_supported weight(20)
+600 items:
+ base_packer:
+  time: 31.04, bins: 18.0
+ big_lay_small_stand:
+  time: 27.41, bins: 17.67
+700 items:
+ base_packer:
+  time: 42.96, bins: 20.33
+ big_lay_small_stand:
+  time: 39.09, bins: 20.0
+800 items:
+ base_packer:
+  time: 61.24, bins: 23.33
+ big_lay_small_stand:
+  time: 53.92, bins: 22.0
+==========2026-02-21 21:30:20==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+  Constraint weight_within_limit weight(5)
+  Constraint fits_inside_bin weight(10)
+  Constraint no_overlap weight(15)
+  Constraint is_supported weight(20)
+100 items:
+ base_packer:
+  time: 1.09, bins: 3.33
+ all_lay:
+  time: 1.06, bins: 4.33
+ all_stand:
+  time: 0.95, bins: 3.33
+ big_lay_small_stand:
+  time: 0.87, bins: 4.0
+200 items:
+ base_packer:
+  time: 3.16, bins: 6.0
+ all_lay:
+  time: 3.05, bins: 7.0
+ all_stand:
+  time: 2.89, bins: 6.33
+ big_lay_small_stand:
+  time: 2.93, bins: 6.0
+300 items:
+ base_packer:
+  time: 6.5, bins: 9.67
+ all_lay:
+  time: 6.69, bins: 11.0
+ all_stand:
+  time: 6.21, bins: 9.0
+ big_lay_small_stand:
+  time: 6.31, bins: 9.67
+==========2026-02-21 21:39:45==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+  Constraint weight_within_limit weight(5)
+  Constraint fits_inside_bin weight(10)
+  Constraint no_overlap weight(15)
+  Constraint is_supported weight(20)
+400 items:
+ base_packer:
+  time: 14.7, bins: 11.67
+ all_lay:
+  time: 13.06, bins: 14.0
+ all_stand:
+  time: 11.36, bins: 11.67
+ big_lay_small_stand:
+  time: 12.5, bins: 11.67
+500 items:
+ base_packer:
+  time: 22.08, bins: 14.67
+ all_lay:
+  time: 19.04, bins: 17.67
+ all_stand:
+  time: 18.82, bins: 15.0
+ big_lay_small_stand:
+  time: 18.62, bins: 15.0
+600 items:
+ base_packer:
+  time: 31.8, bins: 17.67
+ all_lay:
+  time: 27.47, bins: 20.33
+ all_stand:
+  time: 25.44, bins: 17.67
+ big_lay_small_stand:
+  time: 25.87, bins: 17.67
+==========2026-02-21 22:25:00==========
+System Information:
+ System: Linux
+ Node Name: Ideapad
+ Release: 6.17.0-14-generic
+ Version: #14-Ubuntu SMP PREEMPT_DYNAMIC Fri Jan  9 17:01:16 UTC 2026
+ Machine: x86_64
+ Processor: 
+Banchmarking Parameters:
+ items dimensions:
+  width: (0.1, 1)
+  depth: (0.1, 1)
+  height: (0.1, 1)
+  weight: (0.1, 1)
+ bin parameters:
+  width: 2
+  depth: 2
+  height: 2
+  max_weight: 100
+ constraints:
+  Constraint weight_within_limit weight(5)
+  Constraint fits_inside_bin weight(10)
+  Constraint no_overlap weight(15)
+100 items:
+ py3dbp:
+  time: 0.62, bins: 5.0
+ base_packer:
+  time: 0.99, bins: 3.0
+200 items:
+ py3dbp:
+  time: 2.41, bins: 8.33
+ base_packer:
+  time: 2.74, bins: 5.33
+300 items:
+ py3dbp:
+  time: 5.17, bins: 11.67
+ base_packer:
+  time: 5.96, bins: 7.67

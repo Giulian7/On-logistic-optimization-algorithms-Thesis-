@@ -3,7 +3,7 @@ from random import random,randint,gauss
 from .Item import Item
 from .Space import Vector3, Volume
 
-def item_generator(width : tuple[Decimal,Decimal] , height : tuple[Decimal,Decimal], depth : tuple[Decimal,Decimal], weight : tuple[Decimal,Decimal], priority_range : tuple[int,int] = (0,0), batch_size : int = 1, use_gaussian_distrib : bool = False, decimals : int = 3):
+def item_generator(width : tuple[Decimal,Decimal] , height : tuple[Decimal,Decimal], depth : tuple[Decimal,Decimal], weight : tuple[Decimal,Decimal], priority_range : tuple[int,int] = (0,0), batch_size : int = 1, use_gaussian_distrib : bool = False, decimals : int = 3) -> Item|list[Item]:
     """
     Generate Item objects with the given specifics
     
@@ -26,7 +26,7 @@ def item_generator(width : tuple[Decimal,Decimal] , height : tuple[Decimal,Decim
     randf = (lambda mu,sigma: abs(gauss(mu,sigma))) if use_gaussian_distrib else (lambda min,max: abs(min+random()*(max-min)))
     
     if batch_size == 1:
-        return Item(
+        ret = Item(
             name    = None,
             volume  = Volume(
                 size = Vector3(
@@ -38,6 +38,8 @@ def item_generator(width : tuple[Decimal,Decimal] , height : tuple[Decimal,Decim
             weight  = Decimal(randf(weight[0],weight[1])),
             priority= (randint(priority_range[0],priority_range[1]))
         )
+        ret.format_numbers(decimals)
+        return ret
     else:
         items = []
         for i in range(0,batch_size):
@@ -53,5 +55,6 @@ def item_generator(width : tuple[Decimal,Decimal] , height : tuple[Decimal,Decim
                 weight  = Decimal(randf(weight[0],weight[1])),
                 priority= (randint(priority_range[0],priority_range[1]))
             )
+            item.format_numbers(decimals)
             items.append(item)
         return items

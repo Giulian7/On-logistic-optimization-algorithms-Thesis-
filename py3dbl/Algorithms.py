@@ -42,7 +42,7 @@ def algorithm(algorithm_function):
     return algorithm_function
 
 @algorithm
-def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None):
+def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, fresh_start : bool = True):
     """
     The algorithm used by the original py3dbp Packer.pack()
     
@@ -54,6 +54,8 @@ def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constrai
     :type constraints: list[Constraint]
     :param default_bin: A default bin to use if there are no more available bins
     :type default_bin: None | BinModel
+    :param fresh_start: Used to clear the bins before the packing
+    :type fresh_start: bool
     """
     def try_fit(bin : Bin, item : Item):
         old_pos = item.position
@@ -74,12 +76,15 @@ def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constrai
     current_configuration = []
     unfitted_items = []
     constraints.sort()
+    if fresh_start:
+        for bin in available_bins:
+            bin.reset()
     items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
-    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
+    available_bins.sort(key=lambda bin: bin.free_volume())
 
     while len(items_to_pack) != 0:
-        if available_bins != None and len(available_bins) != 0:
-            bin = available_bins.pop(0)
+        if available_bins != None and len(available_bins) > len(current_configuration):
+            bin = available_bins[len(current_configuration)]
         elif default_bin != None:
             bin = Bin(len(current_configuration),default_bin)
         else:
@@ -108,24 +113,25 @@ def base_packer(available_bins : list[Bin], items_to_pack : list[Item], constrai
 
 def _try_fit(bin : Bin, item : Item, constraints : list[Constraint], allow_full_rotation = False):
     old_pos = item.position
-    initial_state = item.stand
+    initial_stand = item.stand
+    neg_dimensions = -item.dimensions
     for ib in bin.items:
         pivot = Vector3(*ib.position)
-        for axis in [0,2,1]:
-            for versor in [1,-1]:
-                item.position = pivot + map(lambda x: ib.dimensions[x]*versor if x == axis else 0, range(3))
+        for axis in [0,2,1]: # first check x, then z and last y
+            for target in [ib.dimensions,neg_dimensions]:
+                item.position = pivot + map(lambda x: target[x] if x == axis else 0, range(3))
                 for orizontal_deg_free in range(2):
                     for vertical_deg_free in range(2):
                         if bin.put_item(item,constraints):
                             return True
-                        item.rotate90(orizontal=not initial_state,vertical=initial_state)
-                    if allow_full_rotation: item.rotate90(vertical=not initial_state, orizontal=initial_state)
+                        item.rotate90(orizontal=not initial_stand,vertical=initial_stand)
+                    if allow_full_rotation: item.rotate90(orizontal=initial_stand, vertical=not initial_stand)
                     else: break
     item.position = old_pos
     return False
 
 @algorithm
-def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation : bool = False):
+def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation : bool = False, fresh_start : bool = True):
     """
     An algorithm that before the insertion makes all the item stand on the smallest side
     
@@ -139,11 +145,16 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
     :type default_bin: None | BinModel
     :param allow_full_rotation: True allow items to rotate on the axis "other" axis
     :type allow_full_rotation: bool
+    :param fresh_start: Used to clear the bins before the packing
+    :type fresh_start: bool
     """
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
+    if fresh_start:
+        for bin in available_bins:
+            bin.reset()
+    available_bins.sort(key=lambda bin: bin.free_volume())
 
     for item in items_to_pack:
         surface_idx = item.shortest_surface()
@@ -151,15 +162,11 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
         item.min_surface = item.dimensions[surface_idx[0]] * item.dimensions[surface_idx[1]]
         item.set_bottom_surface(surface_idx)
         
-
     items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
-    items_to_pack.sort(key=(lambda item: item.min_surface),reverse=True)
-    for idx, item in enumerate(items_to_pack):
-        item.name = idx  
 
     while len(items_to_pack) != 0:
-        if available_bins != None and len(available_bins) != 0:
-            bin = Bin(len(current_configuration),available_bins.pop(0))
+        if available_bins != None and len(available_bins) > len(current_configuration):
+            bin = available_bins[len(current_configuration)]
         elif default_bin != None:
             bin = Bin(len(current_configuration),default_bin)
         else:
@@ -186,7 +193,7 @@ def all_stand(available_bins : list[Bin], items_to_pack : list[Item], constraint
     return current_configuration
 
 @algorithm
-def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation = False):
+def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, allow_full_rotation = False, fresh_start : bool = True):
     """
     An algorithm that before the insertion makes all the item lay on the widest side
     
@@ -200,11 +207,16 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
     :type default_bin: None | BinModel
     :param allow_full_rotation: True allow items to rotate on the axis "other" axis
     :type allow_full_rotation: bool
+    :param fresh_start: Used to clear the bins before the packing
+    :type fresh_start: bool
     """
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
+    if fresh_start:
+        for bin in available_bins:
+            bin.reset()
+    available_bins.sort(key=lambda bin: bin.free_volume(),reverse=True)
 
     for item in items_to_pack:
         surface_idx = item.widest_surface()
@@ -213,13 +225,10 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
         item.set_bottom_surface(surface_idx)
 
     items_to_pack.sort(key=lambda item: item.volume(),reverse=True)
-    #items_to_pack.sort(key=(lambda item: item.max_surface),reverse=True)
-    for idx, item in enumerate(items_to_pack):
-        item.name = idx  
 
     while len(items_to_pack) != 0:
-        if available_bins != None and len(available_bins) != 0:
-            bin = Bin(len(current_configuration),available_bins.pop(0))
+        if available_bins != None and len(available_bins) > len(current_configuration):
+            bin = available_bins[len(current_configuration)]
         elif default_bin != None:
             bin = Bin(len(current_configuration),default_bin)
         else:
@@ -246,7 +255,7 @@ def all_lay(available_bins : list[Bin], items_to_pack : list[Item], constraints 
     return current_configuration
 
 @algorithm
-def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, volume_threashold = Decimal(.5), allow_full_rotation = False):
+def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], constraints : list[Constraint], default_bin : None|BinModel = None, volume_threshold = Decimal(.5), allow_full_rotation = False, fresh_start : bool = True):
     """
     An algorithm that before the insertion makes the items that have less volume than threshold stand on the smallest side and the items that have more volume than threshold lay on the widest side
     
@@ -262,27 +271,30 @@ def big_lay_small_stand(available_bins : list[Bin], items_to_pack : list[Item], 
     :type volume_threshold: Decimal
     :param allow_full_rotation: True allow items to rotate on the axis "other" axis
     :type allow_full_rotation: bool
+    :param fresh_start: Used to clear the bins before the packing
+    :type fresh_start: bool
     """
 
     current_configuration = []
     unfitted_items = []
     constraints.sort()
-    available_bins.sort(key=lambda bin: bin.volume(),reverse=True)
+    if fresh_start:
+        for bin in available_bins:
+            bin.reset()
+    available_bins.sort(key=lambda bin: bin.free_volume())
 
     for item in items_to_pack:
-        item.stand = item.volume() < volume_threashold
+        item.stand = item.volume() < volume_threshold
         item.set_bottom_surface(
-            item.shortest_surface() if item.volume() < volume_threashold else
+            item.shortest_surface() if item.volume() < volume_threshold else
             item.widest_surface()
         )     
 
     items_to_pack.sort(key=lambda item: item.volume(), reverse=True)
-    for idx, item in enumerate(items_to_pack):
-        item.name = idx  
 
     while len(items_to_pack) != 0:
-        if available_bins != None and len(available_bins) != 0:
-            bin = Bin(len(current_configuration),available_bins.pop(0))
+        if available_bins != None and len(available_bins) > len(current_configuration):
+            bin = available_bins[len(current_configuration)]
         elif default_bin != None:
             bin = Bin(len(current_configuration),default_bin)
         else:

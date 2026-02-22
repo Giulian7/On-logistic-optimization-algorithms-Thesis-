@@ -3,6 +3,7 @@ from .Decimal import set_to_decimal
 from .Item import Item
 from .Space import Vector3, Volume
 from typing import Sequence, Iterable
+from functools import reduce
 
 class BinModel():
     """
@@ -46,7 +47,7 @@ class BinModel():
     def dimensions(self): return self._size
 
     def volume(self):
-        return self.width * self.height * self.depth
+        return (self.width * self.height * self.depth) - reduce(lambda x,y: x+y.volume(), self.dead_volumes,0)
     
     def __str__(self):
         return "%s(%sx%sx%s, max_weight:%s) vol(%s)" % (
@@ -66,13 +67,13 @@ class BinModel():
 
 # BinModel Testing
 testmodel1 = BinModel("testmodel",(1,2,3),1,[],[Volume((1,1,1))])
-assert str(testmodel1) == "testmodel(1x2x3, max_weight:1) vol(6)", str(testmodel1)
+assert str(testmodel1) == "testmodel(1x2x3, max_weight:1) vol(5)", str(testmodel1)
 testmodel1.width = Decimal(1.1111)
 testmodel1.height = Decimal(2.2222)
 testmodel1.depth = Decimal(3.3333)
 testmodel1.max_weight = Decimal(1.1111)
 testmodel1.format_numbers(2)
-assert str(testmodel1) == "testmodel(1.11x2.22x3.33, max_weight:1.11) vol(8.205786)", str(testmodel1)
+assert str(testmodel1) == "testmodel(1.11x2.22x3.33, max_weight:1.11) vol(7.205786)", str(testmodel1)
 # set_constraints to test in constraints module
 
 class Bin:
@@ -110,6 +111,9 @@ class Bin:
     
     def volume(self):
         return self._model.volume()
+    
+    def free_volume(self):
+        return self.volume() - reduce(lambda x,y: x+y.volume(), self.items, 0)
 
     def __str__(self):
         return f"Bin {self.id} of model {self._model.name}: loaded items {len(self.items)}"
