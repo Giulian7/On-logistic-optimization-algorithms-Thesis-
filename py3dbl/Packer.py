@@ -1,13 +1,15 @@
 from .Item import Item
 from .Bin import Bin, BinModel
-from .Constraints import constraints, Constraint
+from .Constraints import Constraint
 from .Algorithms import PackingAlgorithm, algorithms
 
 class Packer():
     """
     Store configurations and execute 3D bin packing algorithm(s)
     """
-    def __init__(self, algorithm : PackingAlgorithm = algorithms['base_packer'], default_bin : None|BinModel = None, fleet : list[Bin] = [], items : list[Item] = [], current_configuration : list[Bin] = []):
+    def __init__(self, algorithm : PackingAlgorithm = algorithms['base_packer'], default_bin : None|BinModel = None,
+                 fleet : list[Bin] = [], items : list[Item] = [], current_configuration : list[Bin] = []
+                ):
         """
         :param default_bin: A bin model that describes the preferred bin to pack in case the fleet is insufficent
         :type default_bin: None | BinModel
@@ -133,6 +135,4 @@ class Packer():
             configuration_volume += bin.volume()
         statistics["average_volume"] = statistics["loaded_volume"]/configuration_volume
         return statistics
-    
-# Packer testing
 

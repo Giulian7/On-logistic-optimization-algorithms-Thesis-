@@ -25,7 +25,7 @@ def packing_benchmarker(algorithms : list[str], constraints : list[py3dbl.Constr
     """
     Put the listed algorithms in the same conditions (constraints set, item batch, model, ecc.) and test it for the number of times set by iterations
     
-    :param algorithms: List names of algorithms to use, the name should be a registred in py3dbl.algorithms of py3dbp
+    :param algorithms: List names of algorithms to use, the name should be a registred in py3dbl.algorithms or py3dbp
     """
     
     model = py3dbl.BinModel(None,[bin_params['width'],bin_params['height'],bin_params['depth']],bin_params['max_weight'],constraints)
